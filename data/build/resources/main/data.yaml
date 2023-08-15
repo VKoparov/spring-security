@@ -1,0 +1,9 @@
+spring:
+  data:
+    mongodb:
+      auto-index-creation: true
+      repositories:
+        type: auto
+        enable: true
+      url: mongodb://localhost:27017
+      database: spring-security

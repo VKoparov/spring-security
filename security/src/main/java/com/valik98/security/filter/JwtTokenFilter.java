@@ -3,13 +3,12 @@ package com.valik98.security.filter;
 import com.valik98.security.utils.JwtTokenProvider;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.Jwts;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
@@ -51,13 +50,22 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 }
             }
         } catch (ExpiredJwtException e) {
-            response.sendError(HttpStatus.UNAUTHORIZED.value(), "Token has expired!");
+            sendError(response, HttpServletResponse.SC_UNAUTHORIZED, "Token has expired!");
             return;
         } catch (JwtException | AuthenticationException e) {
-            response.sendError(HttpStatus.UNAUTHORIZED.value(), "Invalid token!");
+            sendError(response, HttpServletResponse.SC_UNAUTHORIZED, "Invalid token!");
             return;
         }
 
         chain.doFilter(request, response);
+    }
+
+    @SneakyThrows
+    private void sendError(HttpServletResponse response, int status, String message) {
+        response.setStatus(status);
+        response.setContentType("application/json");
+        response.getWriter().write(
+                "{ \"message\": \"" + message + "\" }"
+        );
     }
 }

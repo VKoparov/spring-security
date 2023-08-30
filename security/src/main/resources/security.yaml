@@ -1,5 +1,5 @@
 application:
   security:
     jwt:
-      secret:
-      expiration: 3600000
+      secret: ${JWT_SECRET}
+      expiration: ${JWT_EXPIRATION}

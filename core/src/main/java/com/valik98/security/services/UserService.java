@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
@@ -20,6 +22,8 @@ public class UserService implements UserDetailsService {
 
     private final UserMapper userMapper;
 
+    private final PasswordEncoder passwordEncoder;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByUsername(username)
@@ -29,10 +33,11 @@ public class UserService implements UserDetailsService {
     }
 
     public UserModel register(UserModel userModel) {
-        User user = userRepository.save(
-                userMapper.toUser(userModel)
-        );
+        User user = userMapper.toUser(userModel);
+        user.setPassword(passwordEncoder.encode(userModel.password()));
 
-        return userMapper.toUserModel(user);
+        return userMapper.toUserModel(
+                userRepository.save(user)
+        );
     }
 }

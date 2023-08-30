@@ -1,7 +1,5 @@
-api/openApi/generated/*
-metorikku-standalone.jar
-
 **/.gradle
+**/.gradle/
 **/build/
 **/build
 **/bin/

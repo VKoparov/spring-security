@@ -10,8 +10,8 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(value = {UsernameNotFoundException.class})
-    protected ResponseEntity<Object> handleWrongUsername(UsernameNotFoundException e) {
+    @ExceptionHandler(value = {Exception.class})
+    protected ResponseEntity<Object> handleWrongUsername(Exception e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
     }
 }

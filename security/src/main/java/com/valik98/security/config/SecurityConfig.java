@@ -29,6 +29,8 @@ public class SecurityConfig {
 
     private final JwtTokenFilter jwtAuthenticationFilter;
 
+    private final AuthenticationEntrypoint authenticationEntrypoint;
+
     private final UserDetailsService userDetailsService;
 
     @Bean
@@ -52,9 +54,12 @@ public class SecurityConfig {
         httpSecurity
                 .authorizeHttpRequests()
                 .requestMatchers("/v1/auth/**").permitAll()
-                .anyRequest().authenticated()
+                .requestMatchers("/actuator/**").permitAll()
+                .anyRequest()
+                .authenticated()
                 .and()
                 .exceptionHandling()
+                .authenticationEntryPoint(authenticationEntrypoint)
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

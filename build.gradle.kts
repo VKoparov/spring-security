@@ -25,6 +25,7 @@ subprojects {
     dependencies {
         // Spring Context
         implementation("org.springframework:spring-context:6.0.11")
+        implementation("org.springframework.boot:spring-boot-starter-actuator:3.1.2")
 
         // Spring Security
         implementation("org.springframework.boot:spring-boot-starter-security:3.1.2")
